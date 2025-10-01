@@ -143,16 +143,18 @@
   });
 </script>
 
-<div class="min-h-screen flex flex-col items-center justify-center">
+<div class="min-h-screen flex flex-col items-center justify-center bg-gray-300">
   <div
-    class="flex flex-col w-full max-w-2xl min-w-1/2 gap-4 mb-5 p-5 text-blue-950 bg-blue-300 border border-blue-400 rounded-lg shadow-sm"
+    class="flex flex-col w-full max-w-2xl min-w-1/2 gap-4 mb-5 p-5 text-blue-950 bg-blue-300 border border-blue-400 rounded-lg shadow-xl"
   >
-    <h2 class="text-xl font-semibold text-blue-950">Enter your Notes Here:</h2>
+    <h2 class="text-xl font-semibold mb-4 text-blue-950">
+      Enter your Notes Here:
+    </h2>
     <textarea
       bind:value={inputText}
       placeholder="Enter text here..."
       rows={summaryText ? 3 : 10}
-      class="w-full p-3 bg-blue-200 border border-blue-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-sans"
+      class="w-full p-3 py-4 mb-6 bg-blue-200 border border-blue-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 font-sans"
     ></textarea>
     <input
       type="file"
@@ -169,7 +171,7 @@
 
     {#if summaryText}
       <div
-        class="mt-5 p-4 bg-blue-200 text-blue-950 border border-blue-600 border-l-8 rounded-md"
+        class="mt-5 p-4 leading-relaxed bg-blue-200 text-blue-950 border border-blue-600 border-l-8 rounded-md"
       >
         <h3 class="text-lg font-semibold mb-2 text-blue-800">Summary:</h3>
         <p class="whitespace-pre-wrap">{summaryText}</p>
