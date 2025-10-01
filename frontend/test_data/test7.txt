@@ -1,0 +1,22 @@
+Game: Canyon Ambush
+Characters: Theron (Paladin), Zala (Cleric), Grimfang (Half-Orc Barbarian)
+Enemies: 4 Goblins, 1 Goblin Shaman (spellcaster)
+Initiative Order: Shaman, Goblins, Theron, Zala, Grimfang.
+
+Round 1:
+Shaman: Casts "Burning Hands" on Theron and Grimfang. Theron saves (DC 14). Grimfang fails, takes 12 fire damage.
+Goblins: Two attack Borin, miss. Two attack Theron, one hits for 4 damage.
+Theron: Focuses on the Shaman. Uses Lay on Hands to heal Grimfang for 10 HP.
+Zala: Casts "Sacred Flame" on Shaman. Roll: 16 (damage 8). Shaman is badly wounded.
+Grimfang: Enters rage. Charges two Goblins blocking the path. Cleave attack (Roll: 19). Kills both instantly.
+
+Round 2:
+DM: Shaman attempts to retreat deeper into the canyon.
+Theron: Pursues Shaman. Uses bonus action to command Zala to follow Grimfang.
+Zala: Follows Grimfang. Heals Theron for 5 HP as she passes.
+Grimfang: Kills the remaining two Goblins (Roll: 14, 17). Path is clear.
+Decision: The party decides to ignore the retreating Shaman and instead investigate the cave entrance the Goblins were guarding. Theron used 10 HP of his Lay on Hands reserve.
+
+Action Items (In-Game):
+1. Investigate the Goblin cave entrance.
+2. Track the Shaman later (Optional).

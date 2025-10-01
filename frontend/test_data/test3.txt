@@ -1,0 +1,13 @@
+Meeting: Database Migration Path Selection
+Date: October 7, 2025
+Attendees: Dev Leads (Sam, Chris), Infrastructure Head (Pat)
+
+Sam: We presented two options for migrating our core customer data: Option A (PostgreSQL with a sharding layer) and Option B (CockroachDB). Option A is cheaper and uses familiar technology but requires significant internal maintenance overhead for sharding.
+Chris: Option B (CockroachDB) is much easier to scale horizontally and guarantees better uptime due to its built-in replication, but the licensing and operational costs are 2.5x higher than Option A.
+Pat: Infrastructure is strongly against Option A. The maintenance burden on the infrastructure team for managing manual sharding is too high and would require hiring two dedicated engineers, which negates the cost savings. We need the reliability of built-roachDB.
+Sam: Understood. The development team can handle the integration complexity for CockroachDB.
+Decision: Proceed with Option B (CockroachDB) for the core customer data migration, prioritizing reliability and simplified scaling over immediate cost savings.
+Action Items:
+1. Sam: Create a detailed integration plan and developer training schedule for CockroachDB. Due: Oct 21.
+2. Pat: Initiate the procurement process for CockroachDB licensing. Due: EOD tomorrow.
+3. Sam & Chris: Schedule a final kickoff meeting with all teams.

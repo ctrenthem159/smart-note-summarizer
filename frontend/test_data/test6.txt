@@ -1,0 +1,15 @@
+Game: The Obsidian Archive - Session 12
+Characters: Kaelen (Elf Rogue), Borin (Dwarf Fighter), Lyra (Human Wizard)
+Location: The Hidden Scriptorium
+
+DM: We start with the party facing the Spectral Librarian, an ancient ghost protecting the restricted section.
+Kaelen: Tries a stealth check (DC 15) to sneak past it. Roll: 8. Fails. The Librarian turns and stares.
+Borin: Steps forward, raises shield, tries Intimidate check. Roll: 18. Success! Librarian is surprised but doesn't attack.
+Lyra: Uses the opening. Asks the Librarian (named "Elara") what it wants. Elara demands the "Tome of Whispers" be returned. Lyra remembers that Tome was burned 5 sessions ago.
+DM: Lyra tries a Deception check (DC 12) to convince Elara the Tome was never taken. Roll: 14. Success!
+Decision: Elara agrees to let them pass for 30 minutes, but only after Kaelen promises, on his honor, not to touch the Scroll of Ages. Kaelen reluctantly agrees.
+Goal: Find the location of the Sunstone Gem within the restricted section before time runs out.
+
+Action Items (In-Game):
+1. Find the Sunstone Gem.
+2. Kaelen: Do NOT touch the Scroll of Ages.

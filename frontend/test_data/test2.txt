@@ -1,0 +1,13 @@
+Meeting: Q4 Strategic Review - Growth Initiatives
+Date: October 4, 2025
+Attendees: CEO (Ryan), CFO (Jane), VP Marketing (Laura)
+
+Jane: Q3 financials closed stronger than expected, primarily due to the international sales division, which exceeded targets by 18%. The domestic market remains flat. We have a 10% unallocated budget surplus.
+Laura: I propose we funnel the entire surplus into a targeted PPC (Pay-Per-Click) campaign for the domestic market, specifically targeting the West Coast region, as initial trials showed a 3x ROI. Estimated cost: $40,000 for the campaign, leaving $10,000 for ad creative development.
+Ryan: That sounds promising, but we must hire a Senior Data Analyst (SDA) to manage and optimize this spend, or we risk waste. Jane, can we expedite the SDA hiring process?
+Jane: Yes, I can approve funding for the new SDA position immediately, but hiring might take 6 weeks.
+Laura: I can manage the campaign launch with existing staff until the SDA arrives, but optimization will suffer after the first month.
+Decision: The $50,000 surplus is approved for the domestic PPC campaign. Jane will immediately open the Senior Data Analyst position.
+Action Items:
+1. Jane: Open and fund the Senior Data Analyst hiring requisition. Due: Monday, Oct 7.
+2. Laura: Prepare and launch the domestic West Coast PPC campaign. Launch Date: Nov 1.

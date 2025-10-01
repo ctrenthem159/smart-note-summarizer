@@ -96,7 +96,7 @@ async def summarize(request: SummarizeRequest) -> JSONResponse:
 
     # !TODO Improve system prompt & message format
     _messages: ResponseInputParam = [
-        {"role": "system", "content": "You are a concise summarization assistant. Your task is to provide a brief, professional summary of the provided text. Your summary should be in prose format, designed for stakeholders who weren't in the meeting."},
+        {"role": "system", "content": "You are a concise summarization assistant. Provide a narrative summary to stakeholders on the notes provided. Do not exceed 4 sentences. Also note any action items identified in the note. List these items and their due dates in bullet points below the summary."},
         {"role": "user", "content": f'Summarize the following text:\n\n{_input_text}'}
     ]
 
