@@ -1,4 +1,4 @@
-import os, shutil, json
+import sys, os, shutil, logging, logging.handlers
 from datetime import datetime, timezone, timedelta
 from typing import Optional
 from dotenv import load_dotenv
@@ -9,12 +9,40 @@ from pydantic import BaseModel
 from openai import OpenAI
 from openai.types.responses import Response ,ResponseInputParam
 
+def setup_logging() -> logging.Logger:
+    logger: logging.Logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    _log_formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+    _log_file_handler = logging.handlers.TimedRotatingFileHandler(
+        '.log',
+        when='midnight',
+        interval=1,
+        backupCount=7,
+        encoding='utf-8'
+    )
+    _log_file_handler.setLevel(logging.DEBUG)
+    _log_file_handler.setFormatter(_log_formatter)
+    logger.addHandler(_log_file_handler)
+
+    _log_console_handler: logging.StreamHandler = logging.StreamHandler(sys.stdout)
+    _log_console_handler.setLevel(logging.INFO)
+    _log_console_handler.setFormatter(_log_formatter)
+    logger.addHandler(_log_console_handler)
+
+    logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+
+    return logger
+
 load_dotenv()
 app = FastAPI()
 client = OpenAI()
-
+LOGGER: logging.Logger = setup_logging()
 SERVER_STARTTIME: datetime = datetime.now(timezone.utc)
-LOG_DIR = "api_logs"
 
 class HeartbeatResponse(BaseModel):
     status: str
@@ -48,65 +76,47 @@ def get_available_disk_space(path: str = ".") -> Optional[int]:
     except Exception:
         return None
 
-def save_log(filename: str, data: dict):
-    os.makedirs(LOG_DIR, exist_ok=True)
-    filepath= os.path.join(LOG_DIR, filename)
-
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
-    print(f'Log saved to: {filepath}')
-
 @app.post("/summarize")
 async def summarize(request: SummarizeRequest) -> JSONResponse:
-    _input_text = request.inputText.strip()
+    _input_text: str = request.inputText.strip()
+    _model: str = "gpt-5"
 
     if not _input_text:
+        LOGGER.info(f'/summarize received invalid request. Missing inputText: {request}')
         return JSONResponse(
             content={"summary":" Input text cannot be empty."},
             status_code=status.HTTP_400_BAD_REQUEST,
         )
 
     # !TODO Improve system prompt & message format
-    messages: ResponseInputParam = [
+    _messages: ResponseInputParam = [
         {"role": "system", "content": "You are a concise summarization assistant. Your task is to provide a brief, professional summary of the provided text. Your summary should be in prose format, designed for stakeholders who weren't in the meeting."},
         {"role": "user", "content": f'Summarize the following text:\n\n{_input_text}'}
     ]
 
-    # !TODO Improve logging structure
-    log_filename: str = datetime.now().strftime('req_%Y%m%d_%H%M%S.json')
-    request_log = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "input_text_length": len(_input_text),
-        "messages": messages,
-        "model": "gpt-5"
-    }
-    save_log(log_filename, request_log)
+    # !TODO Improve successful INFO log (add necessary request info, source, etc.)
+    # LOGGER.info(f'Received valid request.')
+    LOGGER.debug(f'Received valid request: {request}')
 
     try:
         response: Response = client.responses.create(
-            model="gpt-5",
-            input=messages,
+            model=_model,
+            input=_messages,
         )
 
         output:str = response.output_text
 
-        response_log_filename: str = log_filename.replace("req_", "res_")
-        response_log = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "messages": response.model_dump(),
-            "model": "gpt-5"
-        }
-        save_log(response_log_filename, response_log)
+        # !TODO improve INFO logger
+        # LOGGER.info(f'API call successful.')
+        LOGGER.debug(f'API call successful. {response}')
 
         return JSONResponse(
             content={"summary": output},
             status_code=status.HTTP_200_OK
             )
+
     except Exception as e:
-        error_message = f'LLM API Error: {e}'
-        print(error_message)
-        error_log_filename = log_filename.replace("req_", "err_")
-        save_log(error_log_filename, {"error": error_message, "request": request_log})
+        LOGGER.error(f'API call failed: {e}')
 
         return JSONResponse(
             content={"output": f'An error has occured: {e}'},
@@ -158,4 +168,5 @@ async def get_healthcheck() -> JSONResponse:
         message = ", ".join(_fail_reasons) if _fail_reasons else None,
     )
 
+    LOGGER.debug(f'Healtcheck report sent to client. {response}')
     return JSONResponse(content=response.model_dump(), status_code=_http_status)
