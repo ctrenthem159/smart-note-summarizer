@@ -1,25 +1,72 @@
 <script lang="ts">
   import '../app.css';
+  import { onMount } from 'svelte';
 
   let inputText: string = $state('');
   let isLoading: boolean = $state(false);
   let summaryText: string = $state('');
   let toastMessage: string | null = $state(null);
 
+  interface HealthcheckResponse {
+    status: string;
+    timestamp: string;
+    uptime: number;
+    app_ver: string;
+    app_env: string;
+    apikey_set: boolean;
+    disk_free_bytes: number;
+    message: string | null;
+  }
+
+  async function healthcheck() {
+    const healthcheckURL = 'http://127.0.0.1:8000/healthcheck';
+    console.log('Pinging healthcheck endpoint: ${healthcheckURL}');
+
+    try {
+      const response = await fetch(healthcheckURL);
+
+      if (response.ok) {
+        const data: HealthcheckResponse = await response.json();
+        console.log(data.status);
+      } else {
+        console.error(response.status);
+      }
+    } catch (error) {
+      console.error('Backend unreachable. Check if server is running.', error);
+    }
+  }
+
   async function handleSummarize() {
     summaryText = '';
     isLoading = true;
 
-    console.log('API Call goes here', inputText);
+    const apiUrl = 'http://127.0.0.1:8000/summarize';
 
+    // !TODO Improve this to be more efficient
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      const mockResponse = 'Summary text goes here';
-      summaryText = mockResponse;
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputText: inputText,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        summaryText = data.summary;
+      } else {
+        console.error(
+          'Failed to generate summary:',
+          data.summary || 'Unknown error',
+        );
+        summaryText = data.summary || 'Error: Failed to process summary.';
+      }
     } catch (error) {
-      console.error('Backend failure:', error);
-      summaryText =
-        'Error: failed to generate summary. Check the console for more details.';
+      console.error('Network error:', error);
+      summaryText = 'Error: Failed to reach the summary backend.';
     } finally {
       isLoading = false;
     }
@@ -87,6 +134,10 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+
+  onMount(() => {
+    healthcheck();
+  });
 </script>
 
 <div class="min-h-screen flex flex-col items-center justify-center">
