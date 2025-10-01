@@ -57,6 +57,12 @@ class HeartbeatResponse(BaseModel):
 class SummarizeRequest(BaseModel):
     inputText: str
 
+class ClientLog(BaseModel):
+    level: str
+    message: str
+    timestamp: str
+    userAgent: str
+
 origins: list[str] = [
     "http://localhost:5173", # Svelte dev server
 ]
@@ -122,6 +128,25 @@ async def summarize(request: SummarizeRequest) -> JSONResponse:
             content={"output": f'An error has occured: {e}'},
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+@app.post('/log/client', status_code=status.HTTP_204_NO_CONTENT, tags=['logging'])
+async def log_client(log_entry: ClientLog) -> None:
+    log_message = (
+        f'CLIENT LOG [{log_entry.level}] ({log_entry.userAgent}): '
+        f'{log_entry.message}'
+    )
+
+    _log_levels = {
+        'DEBUG': LOGGER.debug,
+        'INFO': LOGGER.info,
+        'WARN': LOGGER.warning,
+        'ERROR': LOGGER.error,
+        'CRITICAL': LOGGER.critical
+    }
+
+    log_func = _log_levels.get(log_entry.level.upper(), LOGGER.info)
+    log_func(log_message)
+    return
 
 @app.get("/healthcheck", response_model=HeartbeatResponse, tags=["healthcheck"])
 async def get_healthcheck() -> JSONResponse:

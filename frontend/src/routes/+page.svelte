@@ -1,6 +1,7 @@
 <script lang="ts">
   import '../app.css';
   import { onMount } from 'svelte';
+  import { initializeClientLogging } from '$lib/logClient';
 
   let inputText: string = $state('');
   let isLoading: boolean = $state(false);
@@ -92,7 +93,7 @@
     };
 
     reader.onerror = (e) => {
-      console.error('Error reading file:', e);
+      console.error('Unable to read uploaded file.', e);
       toastMessage = 'Could not read file. Check console.';
       setTimeout(() => {
         toastMessage = null;
@@ -136,6 +137,8 @@
   }
 
   onMount(() => {
+    initializeClientLogging();
+    console.log('Client logging initalized and ready.');
     healthcheck();
   });
 </script>
